@@ -7,6 +7,11 @@ export default function main() {
     ['saveInterval', 'lastPlayed', 'useTimestamps', 'returnToLastTime'],
     ({ useTimestamps, returnToLastTime }: Settings) => {
       // mutation observer to detect when the video is loaded
+      console.debug(
+        '🚀 | file: content_script.ts:36 | main | useTimestamps, returnToLastTime:',
+        useTimestamps,
+        returnToLastTime,
+      )
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
           if (returnToLastTime) {

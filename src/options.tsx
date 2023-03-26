@@ -11,10 +11,12 @@ function OptionsApp() {
       {
         returnToLastTime: false,
         saveInterval: 5,
+        useTimestamps: true,
       },
       (items) => {
         setReturnToLastTime(items.returnToLastTime)
         setSaveInterval(items.saveInterval)
+        setUseTimestamps(items.useTimestamps)
       },
     )
   }, [])
@@ -25,6 +27,9 @@ function OptionsApp() {
   useEffect(() => {
     chrome.storage.sync.set({ saveInterval })
   }, [saveInterval])
+  useEffect(() => {
+    chrome.storage.sync.set({ useTimestamps })
+  }, [useTimestamps])
 
   return (
     <>

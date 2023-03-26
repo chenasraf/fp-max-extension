@@ -10,11 +10,13 @@ function PopupApp() {
     chrome.storage.sync.get(
       {
         returnToLastTime: false,
-        saveInterval: 5,
+        saveInterval: 5000,
+        useTimestamps: true,
       },
       (items) => {
         setReturnToLastTime(items.returnToLastTime)
         setSaveInterval(items.saveInterval)
+        setUseTimestamps(items.useTimestamps)
       },
     )
   }, [])
@@ -25,10 +27,13 @@ function PopupApp() {
   useEffect(() => {
     chrome.storage.sync.set({ saveInterval })
   }, [saveInterval])
+  useEffect(() => {
+    chrome.storage.sync.set({ useTimestamps })
+  }, [useTimestamps])
 
   return (
     <>
-      <div>
+      <div style={{ width: 200 }}>
         <label>
           <input
             type="checkbox"

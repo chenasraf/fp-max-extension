@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.2.1
+
+### Fixes
+
+- Options & popup behavior
+
 ## v0.2.0
 
 ### Features
