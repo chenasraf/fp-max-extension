@@ -14,7 +14,11 @@
   "options_page": "options.html",
   "content_scripts": [
     {
-      "matches": ["https://www.floatplane.com/*", "https://floatplane.com/*"],
+      "matches": [
+        "https://www.floatplane.com/*",
+        "https://floatplane.com/*",
+        "https://beta.floatplane.com/*"
+      ],
       "js": ["src/content_script.ts"]
     }
   ]
