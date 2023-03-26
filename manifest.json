@@ -3,11 +3,7 @@
   "description": "Enhance your Floatplane experience",
   "version": "0.0.1",
   "manifest_version": 3,
-  "background": {
-    "service_worker": "src/worker.ts",
-    "type": "module"
-  },
-  "permissions": ["storage", "alarms"],
+  "permissions": ["storage"],
   "action": {
     "default_popup": "popup.html"
   },

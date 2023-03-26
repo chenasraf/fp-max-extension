@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "zip": "cd dist && zip -r ../dist.zip .",
+    "zip": "rm -f dist.zip && cd dist && zip -r ../dist.zip .",
     "preview": "vite preview"
   },
   "dependencies": {
