@@ -1,7 +1,7 @@
 {
   "name": "FP Max",
   "description": "Enhance your Floatplane experience",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "manifest_version": 3,
   "permissions": ["storage"],
   "action": {
