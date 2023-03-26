@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "repository": "https://github.com/chenasraf/fp-max-extension",
   "type": "module",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

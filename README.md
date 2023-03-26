@@ -8,8 +8,7 @@ Current features:
 - Timestamp links in comments
 
 🔐 This extension is secure and private. Trust is important, but never trust anyone! Build this
-extension yourself - the extension is open source, and available for peer review or forks. See more
-at https://github.com/chenasraf/fp-max-extension
+extension yourself - the extension is open source, and available for peer review or forks.
 
 🕷 Post issues/bugs, questions or feature requests at this link:
 https://github.com/chenasraf/fp-max-extension/issues
