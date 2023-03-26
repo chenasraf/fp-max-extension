@@ -25,13 +25,14 @@ While Chrome Web Store version is not yet available, you can install directly. S
 
 - Download the latest release zip
 - Extract the zip - make sure it is 1 folder containing other files, not all the files directly, and
-  not nested directories Drag the directory into your browser's extensions page. Note you must have
-  developer mode enabled on your browser for this to work
+  not nested directories
+- Drag the directory into your browser's extensions page. Note you must have developer mode enabled
+  on your browser for this to work
 
 ## Development
 
-To develop new features or if you don't trust the extension on the Chrome Web Store, you should
-build this extension yourself.
+To develop new features or if you don't trust the extension on the Chrome Web Store or provided zip,
+you should be able build this extension yourself.
 
 ### Requirements
 
