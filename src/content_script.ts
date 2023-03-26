@@ -1,26 +1,37 @@
+import { Settings } from './settings'
+
 let handled = ''
 export default function main() {
   console.log('FP Max Loaded')
-  console.log('DOMContentLoaded')
-
-  // mutation observer to detect when the video is loaded
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      handleLastPlayed()
-      const el = mutation.target as HTMLElement
-      if (el.matches('.comment-body')) {
-        handleCommentTimestamps(el)
+  chrome.storage.sync.get(
+    ['saveInterval', 'lastPlayed', 'useTimestamps', 'returnToLastTime'],
+    ({ useTimestamps, returnToLastTime }: Settings) => {
+      // mutation observer to detect when the video is loaded
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (returnToLastTime) {
+            handleLastPlayed()
+          }
+          if (useTimestamps) {
+            const el = mutation.target as HTMLElement
+            if (el.matches('.comment-body')) {
+              handleCommentTimestamps(el)
+            }
+            if (el.querySelector('.comment-body')) {
+              const children = el.querySelectorAll('.comment-body')!
+              for (const child of children) {
+                handleCommentTimestamps(child as HTMLElement)
+              }
+            }
+          }
+        })
+      })
+      if (returnToLastTime) {
+        waitUntil(() => document.querySelector('.video-js video') !== null, handleLastPlayed)
       }
-      if (el.querySelector('.comment-body')) {
-        const children = el.querySelectorAll('.comment-body')!
-        for (const child of children) {
-          handleCommentTimestamps(child as HTMLElement)
-        }
-      }
-    })
-  })
-  waitUntil(() => document.querySelector('.video-js video') !== null, handleLastPlayed)
-  observer.observe(document.body, { attributes: true, childList: true, subtree: true })
+      observer.observe(document.body, { attributes: true, childList: true, subtree: true })
+    },
+  )
 }
 
 main()
