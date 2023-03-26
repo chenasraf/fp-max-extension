@@ -1,4 +1,4 @@
-let handled = false
+let handled = ''
 export default function main() {
   console.log('FP Max Loaded')
   console.log('DOMContentLoaded')
@@ -6,33 +6,32 @@ export default function main() {
   // mutation observer to detect when the video is loaded
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
+      handleLastPlayed()
       const el = mutation.target as HTMLElement
       if (el.matches('.comment-body')) {
-        console.debug('comment-body', el)
         handleCommentTimestamps(el)
       }
       if (el.querySelector('.comment-body')) {
         const children = el.querySelectorAll('.comment-body')!
-        console.debug('comment-body', children)
         for (const child of children) {
           handleCommentTimestamps(child as HTMLElement)
         }
       }
-      handleLastPlayed()
     })
   })
+  waitUntil(() => document.querySelector('.video-js video') !== null, handleLastPlayed)
   observer.observe(document.body, { attributes: true, childList: true, subtree: true })
 }
 
 main()
 
 function handleLastPlayed() {
-  if (handled) return
+  if (handled === document.location.pathname) return
   const vidCont = document.querySelector('.video-js')
   const vid = vidCont?.querySelector('video')
 
   if (vid && vid.duration && vid.currentTime !== undefined) {
-    handled = true
+    handled = document.location.pathname
     const vidId = getVideoId()
     chrome.storage.sync.get([`lastPlayed-${vidId}`, 'saveInterval'], (result) => {
       const lastPlayed = result[`lastPlayed-${vidId}`]
@@ -40,11 +39,13 @@ function handleLastPlayed() {
 
       if (lastPlayed) {
         vid.currentTime = lastPlayed
-        vid.play() // FIXME doesn't work
+        // vid.play() // FIXME doesn't work
       }
 
       setInterval(lastPlayedUpdateCallback(vid, vidId), saveInterval)
     })
+  } else {
+    handled = ''
   }
 }
 
@@ -54,13 +55,6 @@ function lastPlayedUpdateCallback(vid: HTMLVideoElement, vidId: string): () => v
     const key = `lastPlayed-${vidId}`
     chrome.storage.sync.get([key], (result) => {
       if (Math.floor(result[key]) === Math.floor(vid.currentTime)) return
-      console.debug({
-        duration: vid.duration,
-        currentTime: vid.currentTime,
-      })
-      console.debug('setting:', {
-        [key]: vid.currentTime,
-      })
       chrome.storage.sync.set({
         [`lastPlayed-${vidId}`]: vid.currentTime,
       })
@@ -78,8 +72,6 @@ function handleCommentTimestamps(commentBody: HTMLElement) {
   const content = body.textContent!
   const TIME_REGEX = /(\d+):(\d+)(:\d+)?/g
   const matchesTime = content.match(TIME_REGEX)
-  console.debug('content', content)
-  console.debug('matchesHrs', matchesTime)
   if (!matchesTime) return
 
   const newContent = content.replace(TIME_REGEX, (match, hrs, mns, scs) => {
@@ -104,8 +96,16 @@ function handleCommentTimestamps(commentBody: HTMLElement) {
       const vid = vidCont?.querySelector('video')
       if (vid) {
         vid.currentTime = time
-        vid.play()
+        // vid.play()
       }
     })
   })
+}
+
+function waitUntil(cond: () => boolean, cb: () => void) {
+  if (cond()) {
+    cb()
+    return
+  }
+  setTimeout(() => waitUntil(cond, cb), 100)
 }
