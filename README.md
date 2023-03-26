@@ -18,6 +18,16 @@ https://github.com/chenasraf/fp-max-extension/issues
 risk, and if something breaks, complain to me and not to the LMG staff. If you are from
 LMG/Floatplane and would like me to take this down, please contact me.
 
+### Direct installation
+
+While Chrome Web Store version is not yet available, you can install directly. See our
+[Releases](https://github.com/chenasraf/fp-max-extension/releases/latest) page.
+
+- Download the latest release zip
+- Extract the zip - make sure it is 1 folder containing other files, not all the files directly, and
+  not nested directories Drag the directory into your browser's extensions page. Note you must have
+  developer mode enabled on your browser for this to work
+
 ## Development
 
 To develop new features or if you don't trust the extension on the Chrome Web Store, you should
@@ -33,7 +43,7 @@ build this extension yourself.
 - Run `npm install` (or `yarn install`)
 - Run `npm run build` (or `yarn build`) to build the output to the `dist/` folder
 - Drag the `dist/` folder to your browser's extensions page. Note you must have developer mode
-  enabled on your browser for this to work.
+  enabled on your browser for this to work
 - You should be good to go
 
 ### Contributions
