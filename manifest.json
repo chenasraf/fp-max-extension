@@ -1,0 +1,21 @@
+{
+  "name": "FP Max",
+  "description": "Enhance your Floatplane experience",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "src/worker.ts",
+    "type": "module"
+  },
+  "permissions": ["storage", "alarms"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": ["https://www.floatplane.com/*", "https://floatplane.com/*"],
+      "js": ["src/content_script.ts"]
+    }
+  ]
+}
