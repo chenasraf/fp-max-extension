@@ -34,4 +34,7 @@ export default defineManifest(async (env) => ({
       js: ['src/content_script.ts'],
     },
   ],
+  icons: {
+    '128': 'src/assets/icon.png',
+  },
 }))

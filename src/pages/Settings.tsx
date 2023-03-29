@@ -98,7 +98,7 @@ export function SettingsPage(props: SettingsProps) {
             <p className="py-2">
               <a
                 className="text-base text-primary"
-                href="https://github.com/chenasraf/fp-max"
+                href="https://github.com/chenasraf/fp-max-extension"
                 target="_blank"
                 rel="noreferrer"
               >
