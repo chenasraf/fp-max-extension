@@ -21,9 +21,13 @@ export default defineManifest(async (env) => ({
   description: 'Enhance your Floatplane experience',
   permissions: ['storage'],
   action: {
-    default_popup: 'popup.html',
+    default_popup: 'src/popup.html',
   },
-  options_page: 'options.html',
+  background: {
+    service_worker: 'src/worker.ts',
+    type: 'module',
+  },
+  options_page: 'src/options.html',
   content_scripts: [
     {
       matches: [

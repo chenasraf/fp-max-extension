@@ -12,17 +12,17 @@ export default defineConfig({
       '@/': path.resolve(__dirname, './src'),
     },
   },
-  build: {
-    rollupOptions: {
-      input: {
-        // manifest: path.resolve(__dirname, 'manifest.json'),
-        content_script: path.resolve(__dirname, 'src', 'content_script.ts'),
-        worker: path.resolve(__dirname, 'src', 'worker.ts'),
-        options: path.resolve(__dirname, 'options.html'),
-        popup: path.resolve(__dirname, 'popup.html'),
-      },
-    },
-  },
+  // build: {
+  //   rollupOptions: {
+  //     input: {
+  //       // manifest: path.resolve(__dirname, 'manifest.json'),
+  //       content_script: path.resolve(__dirname, 'src', 'content_script.ts'),
+  //       worker: path.resolve(__dirname, 'src', 'worker.ts'),
+  //       options: path.resolve(__dirname, 'options.html'),
+  //       popup: path.resolve(__dirname, 'popup.html'),
+  //     },
+  //   },
+  // },
   plugins: [
     preact({
       babel: {
