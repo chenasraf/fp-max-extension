@@ -32,7 +32,7 @@ function OptionsApp() {
   }, [useTimestamps])
 
   return (
-    <>
+    <div className="container max-w-lg mx-auto">
       <div>
         <label>
           <input
@@ -70,7 +70,7 @@ function OptionsApp() {
           Allow clicking timestamps in the comments to jump to video time
         </label>
       </div>
-    </>
+    </div>
   )
 }
 
