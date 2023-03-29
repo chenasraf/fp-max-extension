@@ -1,14 +1,15 @@
 {
   "name": "fp-max-extension",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.2",
   "repository": "https://github.com/chenasraf/fp-max-extension",
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "tsc && vite build --mode development",
+    "build": "tsc && vite build --mode production",
     "zip": "rm -f dist.zip && cd dist && zip -r ../dist.zip .",
+    "build:zip": "yarn build && yarn zip",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -29,6 +30,7 @@
     "eslint": "^8.36.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "nodemon": "^2.0.22",
     "typescript": "^4.9.3",
     "vite": "^4.2.0"
   }

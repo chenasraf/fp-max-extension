@@ -1,6 +1,6 @@
 # FP Max Extension
 
-Enhance your Floatplane experience!
+This is a tiny extension for quality-of-life improvements while browsing floatplane.com.
 
 Current features:
 

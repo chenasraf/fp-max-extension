@@ -1,0 +1,3 @@
+{
+  "ignore": ["dist/*", "dist/**/*", "vite.config.ts.*.mjs"]
+}

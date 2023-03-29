@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.2.2
+
+### Features
+
+- Improved Options & Popup design
+- Initial Chrome Web Store release
+
 ## v0.2.1
 
 ### Fixes
