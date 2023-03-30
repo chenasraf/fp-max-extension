@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.2.3
+
+### Features
+
+- Reset last played for videos when there are <10 seconds left to watch
+
 ## v0.2.2
 
 ### Features

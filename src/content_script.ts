@@ -66,6 +66,10 @@ function lastPlayedUpdateCallback(vid: HTMLVideoElement, vidId: string): () => v
     const key = `lastPlayed-${vidId}`
     chrome.storage.sync.get([key], (result) => {
       if (Math.floor(result[key]) === Math.floor(vid.currentTime)) return
+      if (vid.currentTime >= vid.duration - 10) {
+        chrome.storage.sync.remove([key])
+        return
+      }
       chrome.storage.sync.set({
         [`lastPlayed-${vidId}`]: vid.currentTime,
       })
