@@ -11,7 +11,7 @@ Current features:
 build this extension yourself: the extension is open source, and available for peer review or forks.
 
 🕷 Post issues/bugs, questions or feature requests at this link:
-https://github.com/chenasraf/fp-max-extension/issues
+<https://github.com/chenasraf/fp-max-extension/issues>
 
 👨‍⚖️ This extension is not affiliated with Floatplane, LMG or LTT in any capacity. Use it at your own
 risk, and if something breaks, complain to me and not to the LMG staff. If you are from
@@ -36,14 +36,16 @@ This extension should work on all Chromium-based browsers:
 
 ### Direct installation
 
-While Chrome Web Store version is not yet available, you can install directly. See our
-[Releases](https://github.com/chenasraf/fp-max-extension/releases/latest) page.
+To avoid the Chrome Web Store, you can install directly from zip in developer mode. See our
+[Releases](https://github.com/chenasraf/fp-max-extension/releases/latest) page for the download
+link.
 
 - Download the latest release zip
-- Extract the zip - make sure it is 1 folder containing other files, not all the files directly, and
-  not nested directories
-- Drag the directory into your browser's extensions page. Note you must have developer mode enabled
-  on your browser for this to work
+- Extract the zip
+  > make sure it is 1 folder containing other files, not all the files directly, and not nested
+  > directories
+- Drag the directory into your browser's extensions page.
+  > Note you must have developer mode enabled on your browser for this to work
 
 ## Development
 
@@ -59,12 +61,33 @@ you should be able build this extension yourself.
 - Clone this repository
 - Run `npm install` (or `yarn install`)
 - Run `npm run build` (or `yarn build`) to build the output to the `dist/` folder
-- Drag the `dist/` folder to your browser's extensions page. Note you must have developer mode
-  enabled on your browser for this to work
+- Drag the `dist/` folder to your browser's extensions page.
+  > Note you must have developer mode enabled on your browser for this to work
 - You should be good to go
 
 ### Contributions
 
-I welcome all PRs, ideas, bug reports or other questions or feedback.
+## Contributing
 
-Use the [Issues feature](https://github.com/chenasraf/fp-max-extension) to submit your own.
+I am developing this package on my free time, so any support, whether code, issues, or just stars is
+very helpful to sustaining its life. If you are feeling incredibly generous and would like to donate
+just a small amount to help sustain this project, I would be very very thankful!
+
+<a href='https://ko-fi.com/casraf' target='_blank'>
+  <img height='36' style='border:0px;height:36px;'
+    src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3'
+    alt='Buy Me a Coffee at ko-fi.com' />
+</a>
+
+I welcome any issues or pull requests on GitHub. If you find a bug, or would like a new feature,
+don't hesitate to open an appropriate issue and I will do my best to reply promptly.
+
+If you are a developer and want to contribute code, here are some starting tips:
+
+1. Fork this repository
+2. Run `yarn install`
+3. Run `yarn dev` to build dist folder
+4. Install the dist folder using the instruction earlier in the readme
+5. Make any changes you would like
+6. Update the relevant documentation (readme, code comments, type comments)
+7. Create a PR on upstream
