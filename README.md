@@ -17,6 +17,23 @@ https://github.com/chenasraf/fp-max-extension/issues
 risk, and if something breaks, complain to me and not to the LMG staff. If you are from
 LMG/Floatplane and would like me to take this down, please contact me.
 
+## Installation
+
+### Install through Chrome Web Store
+
+The easiest way to install is using the
+[Chrome Web Store](https://chrome.google.com/webstore/detail/fp-max/bpneojingmonahfcbnojghpnnllngamc?hl=en&authuser=0)
+link.
+
+This extension should work on all Chromium-based browsers:
+
+- Chrome
+- Chromium
+- Brave
+- Arc
+- Edge
+- Others
+
 ### Direct installation
 
 While Chrome Web Store version is not yet available, you can install directly. See our
