@@ -67,11 +67,9 @@ you should be able build this extension yourself.
 
 ### Contributions
 
-## Contributing
-
-I am developing this package on my free time, so any support, whether code, issues, or just stars is
-very helpful to sustaining its life. If you are feeling incredibly generous and would like to donate
-just a small amount to help sustain this project, I would be very very thankful!
+I am developing this package on my free time, so **any support**, whether code, issues, or just
+stars is **very helpful** to sustaining its life. If you are feeling incredibly generous and would
+like to donate just a small amount to help sustain this project, **I would be very very thankful!**
 
 <a href='https://ko-fi.com/casraf' target='_blank'>
   <img height='36' style='border:0px;height:36px;'
