@@ -1,6 +1,11 @@
 # CHANGELOG
 
-## v0.2.3
+## v0.3.0
+
+### Features
+
+- Add completion progress bar on video thumbnails
+- Add completion percent
 
 ### Features
 

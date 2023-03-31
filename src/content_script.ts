@@ -1,12 +1,18 @@
-import { lastPlayedFeature, timestampsFeature } from './fp_features'
+import { lastPlayedFeature, showCompletionFeature, timestampsFeature } from './fp_features'
 import { Settings } from './settings'
 import { waitUntil } from './utils'
 
 export default function main() {
   console.log('FP Max Loaded')
   chrome.storage.sync.get(
-    ['saveInterval', 'lastPlayed', 'useTimestamps', 'returnToLastTime'] as (keyof Settings)[],
-    ({ useTimestamps, returnToLastTime }: Settings) => {
+    {
+      saveInterval: 5000,
+      lastPlayedMap: {},
+      useTimestamps: true,
+      returnToLastTime: true,
+      showCompletion: true,
+    } as Settings,
+    ({ useTimestamps, returnToLastTime, showCompletion }: Settings) => {
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
           if (returnToLastTime) {
@@ -14,6 +20,9 @@ export default function main() {
           }
           if (useTimestamps) {
             timestampsFeature(mutation.target as HTMLElement)
+          }
+          if (showCompletion) {
+            showCompletionFeature(mutation.target as HTMLElement)
           }
         })
       })

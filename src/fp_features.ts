@@ -24,8 +24,9 @@ export function lastPlayedFeature(target: HTMLElement) {
   if (vid && vid.duration && vid.currentTime !== undefined) {
     handled = document.location.pathname
     const vidId = getVideoId()
-    chrome.storage.sync.get([`lastPlayed-${vidId}`, 'saveInterval'], (result) => {
-      const lastPlayed = result[`lastPlayed-${vidId}`]
+    const vidKey = `lastPlayedMap.${vidId}`
+    chrome.storage.sync.get([vidKey, 'saveInterval'], (result) => {
+      const lastPlayed = result[vidKey]
       const saveInterval = result['saveInterval'] ?? 5000
 
       if (lastPlayed) {
@@ -40,20 +41,38 @@ export function lastPlayedFeature(target: HTMLElement) {
   }
 }
 
+export function showCompletionFeature(target: HTMLElement) {
+  if (target.matches('.PostTileWrapper')) {
+    handleShowCompletion(target)
+  }
+  if (target.querySelector('.PostTileWrapper')) {
+    const children = target.querySelectorAll('.PostTileWrapper')!
+    for (const child of children) {
+      handleShowCompletion(child as HTMLElement)
+    }
+  }
+}
+
 function lastPlayedUpdateCallback(vid: HTMLVideoElement, vidId: string): () => void {
   return () => {
     if (vid.paused) return
-    const key = `lastPlayed-${vidId}`
-    chrome.storage.sync.get([key], (result) => {
-      if (Math.floor(result[key]) === Math.floor(vid.currentTime)) return
-      if (vid.currentTime >= vid.duration - 10) {
-        chrome.storage.sync.remove([key])
-        return
-      }
-      chrome.storage.sync.set({
-        [`lastPlayed-${vidId}`]: vid.currentTime,
-      })
-    })
+    const vidKey = `lastPlayedMap.${vidId}`
+    const vidCompletionKey = `completionPercentMap.${vidId}`
+    chrome.storage.sync.get(
+      [vidKey, 'completedPercent'],
+      ({ completedPercent = 95, ...result }) => {
+        if (Math.floor(result[vidKey]) === Math.floor(vid.currentTime)) return
+        if (vid.currentTime / vid.duration >= completedPercent / 100) {
+          chrome.storage.sync.remove([vidKey])
+          chrome.storage.sync.set({ [vidCompletionKey]: 1 })
+          return
+        }
+        chrome.storage.sync.set({
+          [vidKey]: vid.currentTime,
+          [vidCompletionKey]: vid.currentTime / vid.duration,
+        })
+      },
+    )
   }
 }
 
@@ -94,5 +113,28 @@ function handleCommentTimestamps(commentBody: HTMLElement) {
         // vid.play()
       }
     })
+  })
+}
+
+function handleShowCompletion(target: HTMLElement) {
+  if (target.querySelector('.progress') || target.dataset.fpMax) return
+  const vidId = (target.querySelector('a') as HTMLAnchorElement).href.split('/').slice(-1)[0]
+  const vidCompletionKey = `completionPercentMap.${vidId}`
+  chrome.storage.sync.get([vidCompletionKey], (result) => {
+    if (target.querySelector('.progress') || target.dataset.fpMax) return
+    if (!result[vidCompletionKey]) return
+    const progress = document.createElement('div')
+    progress.classList.add('progress')
+    progress.style.position = 'absolute'
+    progress.style.bottom = '0'
+    progress.style.left = '0'
+    progress.style.height = '5px'
+    progress.style.background = '#0085ff' // from FP theme
+    progress.style.width = Math.min(result[vidCompletionKey], 1) * 100 + '%'
+    progress.style.zIndex = '1'
+
+    const thumb = target.querySelector('.PostTileThumbnail') as HTMLDivElement
+    thumb.appendChild(progress)
+    target.dataset.fpMax = 'true'
   })
 }

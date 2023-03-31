@@ -5,6 +5,7 @@ This is a tiny extension for quality-of-life improvements while browsing floatpl
 Current features:
 
 - Remember last played position
+- Show video progress on thumbnails
 - Timestamp links in comments
 
 🔐 This extension is secure and private. Trusting me is nice, but if you don't that's a smart move -

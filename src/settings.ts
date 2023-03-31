@@ -1,6 +1,9 @@
 export interface Settings {
+  lastPlayedMap?: Record<string, number>
+  completionPercentMap?: Record<string, number>
   saveInterval?: number
   returnToLastTime?: boolean
-  lastPlayed?: Record<string, number>
   useTimestamps?: boolean
+  completedPercent?: number
+  showCompletion?: boolean
 }
