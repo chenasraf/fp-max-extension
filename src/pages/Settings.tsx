@@ -1,11 +1,13 @@
 import clsx from 'clsx'
-import { render } from 'preact'
+import { ComponentChild, createContext, render } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 import { Settings } from '../settings'
 
 export interface SettingsProps {
   mode: 'popup' | 'options'
 }
+
+export const ModeContext = createContext<'popup' | 'options'>('popup')
 
 export function SettingsPage(props: SettingsProps) {
   const { mode } = props
@@ -51,62 +53,70 @@ export function SettingsPage(props: SettingsProps) {
   }, [showCompletion])
 
   return (
-    <div className={'min-w-[350px] max-w-xl w-full mx-auto p-4'}>
-      <h1
-        className={clsx('', {
-          'text-4xl my-6': mode === 'options',
-          'text-2xl mb-6': mode === 'popup',
-        })}
-      >
-        FP Max Options
-      </h1>
-      <SettingRow>
-        <label className="text-base">
-          <input
-            type="checkbox"
-            checked={returnToLastTime}
-            onChange={(e) => setReturnToLastTime((e.target as HTMLInputElement).checked)}
-          />{' '}
-          Return to last played time when returning to a video
-        </label>
-      </SettingRow>
-      <SettingRow>
-        <label className="text-base">
-          Time to mark as completed
-          <br />
-          <div className="flex items-center">
-            <input
-              type="range"
-              min={50}
-              max={100}
-              value={completedPercent}
-              step={5}
-              onInput={(e) => setCompletedPercent(parseInt((e.target as HTMLInputElement).value))}
-            />
-            <span>{completedPercent}%</span>
-          </div>
-          <p className="text-sm">
-            When video is played to this percentage, it will be marked as completed.
-          </p>
-        </label>
-      </SettingRow>
-      <SettingRow>
-        <label className="text-base">
-          <input
-            type="checkbox"
-            checked={showCompletion}
-            onChange={(e) => setShowCompletion((e.target as HTMLInputElement).checked)}
-          />{' '}
-          Show progress bar on video thumbnails
-        </label>
-      </SettingRow>
-      <SettingRow>
-        <label
-          className={clsx('text-base transition-all', {
-            'pointer-events-none opacity-50': !returnToLastTime,
+    <ModeContext.Provider value={mode}>
+      <div className={'min-w-[350px] max-w-xl w-full mx-auto p-4'}>
+        <h1
+          className={clsx('', {
+            'text-4xl my-6': mode === 'options',
+            'text-2xl mb-6': mode === 'popup',
           })}
         >
-          How often to save the current time:{' '}
+          FP Max Options
+        </h1>
+        <SettingRow
+          checked={returnToLastTime}
+          onCheckboxChange={(e) => setReturnToLastTime((e.target as HTMLInputElement).checked)}
+          label="Use Last Played Time"
+          helpText="When enabled, the video will start from the last time you watched it. Otherwise, it will start from the beginning."
+        />
+        <SettingRow
+          label="Completion Time"
+          helpText="When video is played to this percentage, it will be marked as completed, the progress will remain
+        full but the last saved time will be reset."
+        >
+          <div className={'flex items-center gap-2'}>
+            <div className="flex-grow">
+              <input
+                className="w-full"
+                type="range"
+                min={50}
+                max={100}
+                value={completedPercent}
+                step={5}
+                onInput={(e) => setCompletedPercent(parseInt((e.target as HTMLInputElement).value))}
+              />
+            </div>
+            <span>{completedPercent}%</span>
+          </div>
+        </SettingRow>
+        <hr className="my-2" />
+        <SettingRow
+          checked={showCompletion}
+          onCheckboxChange={(e) => setShowCompletion((e.target as HTMLInputElement).checked)}
+          label="Show Progress Bar"
+          helpText="When enabled, the video's progress will be shown as a blue bar at the bottom of thumbnails."
+        />
+        <hr className="my-2" />
+        <SettingRow
+          label="Use Timestamp Links"
+          helpText="When enabled, comment timestamps will be converted to links that will jump to the time in the video."
+          checked={useTimestamps}
+          onCheckboxChange={(e) => setUseTimestamps((e.target as HTMLInputElement).checked)}
+        />
+        <hr className="my-2" />
+        <SettingRow
+          label="Save time interval"
+          disabled={!returnToLastTime && !showCompletion}
+          helpText={
+            <>
+              This determines how often the current time is saved.
+              <br />A lower interval will save the current time more often, but will use
+              ever-so-slightly more CPU & network (as the settings are synced to your browser's
+              cloud storage). This is only used if either "Use Last Played Time" or "Show Progress
+              Bar" are enabled.
+            </>
+          }
+        >
           <select
             className="border border-gray-300 rounded-md px-2 py-1"
             value={saveInterval}
@@ -121,57 +131,102 @@ export function SettingsPage(props: SettingsProps) {
             <option value={30000}>30 Seconds</option>
             <option value={60000}>1 Minute</option>
           </select>
-        </label>
-      </SettingRow>
-      <hr className="my-2" />
-      <SettingRow>
-        <label className="text-base">
-          <input
-            type="checkbox"
-            checked={useTimestamps}
-            onChange={(e) => setUseTimestamps((e.target as HTMLInputElement).checked)}
-          />{' '}
-          Allow clicking timestamps in the comments to jump to video time
-        </label>
-      </SettingRow>
-      {mode === 'options' ? (
-        <>
-          <hr className="my-2" />
-          <SettingRow>
-            <p className="py-2">
-              <a
-                className="text-base text-primary"
-                href="https://github.com/chenasraf/fp-max-extension"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View on GitHub
-              </a>
-            </p>
+        </SettingRow>
 
-            <p className="py-2">
-              <span className="text-sm">
-                Copyright &copy; 2023{' '}
+        {mode === 'options' ? (
+          <>
+            <hr className="my-2" />
+            <div className="text-base">
+              <p className="py-1">
                 <a
                   className="text-base text-primary"
-                  href="https://casraf.dev"
+                  href="https://github.com/chenasraf/fp-max-extension"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Chen Asraf
+                  View Source Code on GitHub
                 </a>
-              </span>
-            </p>
-          </SettingRow>
-        </>
-      ) : null}
-    </div>
+              </p>
+              <p className="py-1">
+                <a
+                  className="text-base text-primary"
+                  href="https://github.com/chenasraf/fp-max-extension/issues"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Bug reports, feature requests, and other issues
+                </a>
+              </p>
+
+              <p className="py-2">
+                <span className="text-sm">
+                  Copyright &copy; 2023{' '}
+                  <a
+                    className="text-base text-primary"
+                    href="https://casraf.dev"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Chen Asraf
+                  </a>
+                </span>
+              </p>
+            </div>
+          </>
+        ) : null}
+      </div>
+    </ModeContext.Provider>
   )
 }
 
-function SettingRow(props: { children: preact.ComponentChildren }) {
-  const { children } = props
-  return <div className="my-4 text-base">{children}</div>
+function SettingRow(props: {
+  children?: preact.ComponentChildren
+  disabled?: boolean
+  checked?: boolean
+  onCheckboxChange?(e: Event): void
+  label: ComponentChild
+  helpText: ComponentChild
+}) {
+  const { children, checked, onCheckboxChange, helpText, label, disabled = false } = props
+
+  return (
+    <ModeContext.Consumer>
+      {(mode) => (
+        <div
+          className={clsx('my-4 text-base', {
+            'pointer-events-none opacity-50': disabled,
+          })}
+        >
+          <label className={clsx('flex items-center gap-2')}>
+            {onCheckboxChange ? (
+              <input
+                className="self-start mt-1"
+                type="checkbox"
+                checked={checked}
+                onChange={onCheckboxChange}
+              />
+            ) : (
+              <div className="basis-[13px] min-w-[13px] self-start" />
+            )}
+            <div className="w-full">
+              <div
+                className={clsx({
+                  flex: children,
+                  'gap-2': children && mode === 'popup',
+                  'gap-4 items-center': children && mode === 'options',
+                  'flex-col justify-stretch': mode === 'popup',
+                })}
+              >
+                <span className={clsx({ 'font-bold': mode === 'options' })}>{label}</span>
+                {children ? <div className="flex-grow">{children}</div> : null}
+              </div>
+              {mode === 'options' ? <p className="text-sm mt-1">{helpText}</p> : null}
+            </div>
+          </label>
+        </div>
+      )}
+    </ModeContext.Consumer>
+  )
 }
 
 export default SettingsPage

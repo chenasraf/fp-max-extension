@@ -25,17 +25,19 @@ export function lastPlayedFeature(target: HTMLElement) {
     handled = document.location.pathname
     const vidId = getVideoId()
     const vidKey = `lastPlayedMap.${vidId}`
-    chrome.storage.sync.get([vidKey, 'saveInterval'], (result) => {
-      const lastPlayed = result[vidKey]
-      const saveInterval = result['saveInterval'] ?? 5000
+    chrome.storage.sync.get(
+      [vidKey, 'saveInterval', 'returnToLastTime'],
+      ({ returnToLastTime, saveInterval = 5000, ...result }) => {
+        const lastPlayed = result[vidKey]
 
-      if (lastPlayed) {
-        vid.currentTime = lastPlayed
-        // vid.play() // FIXME doesn't work
-      }
+        if (returnToLastTime && lastPlayed) {
+          vid.currentTime = lastPlayed
+          // vid.play() // FIXME doesn't work
+        }
 
-      setInterval(lastPlayedUpdateCallback(vid, vidId), saveInterval)
-    })
+        setInterval(lastPlayedUpdateCallback(vid, vidId), saveInterval)
+      },
+    )
   } else {
     handled = ''
   }

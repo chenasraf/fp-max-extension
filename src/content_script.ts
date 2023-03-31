@@ -12,10 +12,10 @@ export default function main() {
       returnToLastTime: true,
       showCompletion: true,
     } as Settings,
-    ({ useTimestamps, returnToLastTime, showCompletion }: Settings) => {
+    ({ useTimestamps, showCompletion, returnToLastTime }: Settings) => {
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
-          if (returnToLastTime) {
+          if (returnToLastTime || showCompletion) {
             lastPlayedFeature(mutation.target as HTMLElement)
           }
           if (useTimestamps) {
