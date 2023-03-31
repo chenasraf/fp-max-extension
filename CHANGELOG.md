@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.3.1
+
+### Features
+
+- Update options/popup design
+
 ## v0.3.0
 
 ### Features
