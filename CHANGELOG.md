@@ -5,6 +5,7 @@
 ### Features
 
 - Update options/popup design
+- Add log level setting
 
 ## v0.3.0
 
