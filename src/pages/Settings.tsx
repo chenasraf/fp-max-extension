@@ -1,7 +1,7 @@
 import clsx from 'clsx'
-import { ComponentChild, createContext, render } from 'preact'
+import { ComponentChild, createContext } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
-import { Settings } from '../settings'
+import { LogLevel, defaultSettings } from '../settings'
 
 export interface SettingsProps {
   mode: 'popup' | 'options'
@@ -11,29 +11,24 @@ export const ModeContext = createContext<'popup' | 'options'>('popup')
 
 export function SettingsPage(props: SettingsProps) {
   const { mode } = props
+  const [loading, setLoading] = useState(true)
   const [returnToLastTime, setReturnToLastTime] = useState(true)
   const [saveInterval, setSaveInterval] = useState(5)
   const [useTimestamps, setUseTimestamps] = useState(true)
   const [completedPercent, setCompletedPercent] = useState(95)
   const [showCompletion, setShowCompletion] = useState(true)
+  const [logLevel, setLogLevel] = useState<LogLevel | null>('info')
 
   useEffect(() => {
-    chrome.storage.sync.get(
-      {
-        returnToLastTime: false,
-        saveInterval: 5,
-        useTimestamps: true,
-        completedPercent: 95,
-        showCompletion: true,
-      } as Settings,
-      (items) => {
-        setReturnToLastTime(items.returnToLastTime)
-        setSaveInterval(items.saveInterval)
-        setUseTimestamps(items.useTimestamps)
-        setCompletedPercent(items.completedPercent)
-        setShowCompletion(items.showCompletion)
-      },
-    )
+    chrome.storage.sync.get(defaultSettings, (items) => {
+      setReturnToLastTime(items.returnToLastTime)
+      setSaveInterval(items.saveInterval)
+      setUseTimestamps(items.useTimestamps)
+      setCompletedPercent(items.completedPercent)
+      setShowCompletion(items.showCompletion)
+      setLogLevel(items.logLevel)
+      setLoading(false)
+    })
   }, [])
 
   useEffect(() => {
@@ -51,6 +46,9 @@ export function SettingsPage(props: SettingsProps) {
   useEffect(() => {
     chrome.storage.sync.set({ showCompletion })
   }, [showCompletion])
+  useEffect(() => {
+    chrome.storage.sync.set({ logLevel })
+  }, [logLevel])
 
   return (
     <ModeContext.Provider value={mode}>
@@ -130,6 +128,26 @@ export function SettingsPage(props: SettingsProps) {
             <option value={15000}>15 Seconds</option>
             <option value={30000}>30 Seconds</option>
             <option value={60000}>1 Minute</option>
+          </select>
+        </SettingRow>
+        <hr className="my-2" />
+        <SettingRow
+          label="Log level"
+          disabled={!returnToLastTime && !showCompletion}
+          helpText="Determines how much information is logged to the developer console. Default is 'Info'."
+        >
+          <select
+            className="border border-gray-300 rounded-md px-2 py-1"
+            value={logLevel || ''}
+            onChange={(e) =>
+              setLogLevel(((e.target as HTMLSelectElement).value || null) as LogLevel | null)
+            }
+          >
+            <option value="">None (disabled)</option>
+            <option value="debug">Debug</option>
+            <option value="info">Info</option>
+            <option value="warn">Warn</option>
+            <option value="error">Error</option>
           </select>
         </SettingRow>
 

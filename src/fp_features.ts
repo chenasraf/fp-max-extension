@@ -1,3 +1,5 @@
+import { debugLog, infoLog } from './utils'
+
 let handled = ''
 export function timestampsFeature(target: HTMLElement) {
   if (target.matches('.comment-body')) {
@@ -20,6 +22,7 @@ export function lastPlayedFeature(target: HTMLElement) {
     return
   const vidCont = document.querySelector('.video-js')
   const vid = vidCont?.querySelector('video')
+  debugLog('lastPlayedFeature video:', vid, vid?.duration, vid?.currentTime)
 
   if (vid && vid.duration && vid.currentTime !== undefined) {
     handled = document.location.pathname
@@ -29,9 +32,11 @@ export function lastPlayedFeature(target: HTMLElement) {
       [vidKey, 'saveInterval', 'returnToLastTime'],
       ({ returnToLastTime, saveInterval = 5000, ...result }) => {
         const lastPlayed = result[vidKey]
+        infoLog('lastPlayed', vidId, lastPlayed)
 
         if (returnToLastTime && lastPlayed) {
           vid.currentTime = lastPlayed
+          infoLog('Loading saved time:', vidId, lastPlayed)
           // vid.play() // FIXME doesn't work
         }
 
@@ -65,10 +70,12 @@ function lastPlayedUpdateCallback(vid: HTMLVideoElement, vidId: string): () => v
       ({ completedPercent = 95, ...result }) => {
         if (Math.floor(result[vidKey]) === Math.floor(vid.currentTime)) return
         if (vid.currentTime / vid.duration >= completedPercent / 100) {
+          debugLog('Video completed:', vidId)
           chrome.storage.sync.remove([vidKey])
           chrome.storage.sync.set({ [vidCompletionKey]: 1 })
           return
         }
+        debugLog('Saving last played:', vidId, vid.currentTime)
         chrome.storage.sync.set({
           [vidKey]: vid.currentTime,
           [vidCompletionKey]: vid.currentTime / vid.duration,
@@ -88,7 +95,12 @@ function handleCommentTimestamps(commentBody: HTMLElement) {
   const content = body.textContent!
   const TIME_REGEX = /(\d+):(\d+)(:\d+)?/g
   const matchesTime = content.match(TIME_REGEX)
-  if (!matchesTime) return
+  if (!matchesTime) {
+    debugLog('No timestamps found', content)
+    return
+  }
+
+  debugLog('Found timestamps:', matchesTime, content)
 
   const newContent = content.replace(TIME_REGEX, (match, hrs, mns, scs) => {
     if (scs) {
@@ -124,6 +136,7 @@ function handleShowCompletion(target: HTMLElement) {
   const vidCompletionKey = `completionPercentMap.${vidId}`
   chrome.storage.sync.get([vidCompletionKey], (result) => {
     if (target.querySelector('.progress') || target.dataset.fpMax) return
+    debugLog('Checking completion', vidId, result[vidCompletionKey])
     if (!result[vidCompletionKey]) return
     const progress = document.createElement('div')
     progress.classList.add('progress')
@@ -137,6 +150,7 @@ function handleShowCompletion(target: HTMLElement) {
 
     const thumb = target.querySelector('.PostTileThumbnail') as HTMLDivElement
     thumb.appendChild(progress)
+    debugLog('Added progress bar', vidId, target, progress)
     target.dataset.fpMax = 'true'
   })
 }
