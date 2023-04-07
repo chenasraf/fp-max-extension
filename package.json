@@ -9,7 +9,7 @@
     "dev": "tsc && vite build --mode development",
     "build": "tsc && vite build --mode production",
     "zip": "rm -f dist.zip && cd dist && zip -r ../dist.zip .",
-    "build:zip": "yarn build && yarn zip",
+    "build:zip": "pnpm build && pnpm zip",
     "preview": "vite preview"
   },
   "dependencies": {

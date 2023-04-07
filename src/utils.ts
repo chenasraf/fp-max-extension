@@ -13,10 +13,8 @@ export function objectKeys<T>(obj: T): (keyof T)[] {
   return Object.keys(obj as object) as (keyof T)[]
 }
 
-type Entry<T> = [keyof T, T[keyof T]]
-
-export function objectEntries<T>(obj: T): Entry<T>[] {
-  return Object.entries(obj as object) as Entry<T>[]
+export function objectEntries<T>(obj: T): [keyof T, T[keyof T]][] {
+  return Object.entries(obj as object) as [keyof T, T[keyof T]][]
 }
 
 export function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {

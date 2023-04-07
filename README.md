@@ -60,8 +60,8 @@ you should be able build this extension yourself.
 ### Installation
 
 - Clone this repository
-- Run `npm install` (or `yarn install`)
-- Run `npm run build` (or `yarn build`) to build the output to the `dist/` folder
+- Run `pnpm install`
+- Run `pnpm run build` to build the output to the `dist/` folder
 - Drag the `dist/` folder to your browser's extensions page.
   > Note you must have developer mode enabled on your browser for this to work
 - You should be good to go
@@ -84,8 +84,8 @@ don't hesitate to open an appropriate issue and I will do my best to reply promp
 If you are a developer and want to contribute code, here are some starting tips:
 
 1. Fork this repository
-2. Run `yarn install`
-3. Run `yarn dev` to build dist folder
+2. Run `pnpm install`
+3. Run `pnpm dev` to build dist folder
 4. Install the dist folder using the instruction earlier in the readme
 5. Make any changes you would like
 6. Update the relevant documentation (readme, code comments, type comments)
