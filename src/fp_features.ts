@@ -37,6 +37,7 @@ export function lastPlayedFeature(target: HTMLElement) {
         if (returnToLastTime && lastPlayed) {
           vid.currentTime = lastPlayed
           infoLog('Loading saved time:', vidId, lastPlayed)
+          updatePostDateProgress(lastPlayed / vid.duration)
           // vid.play() // FIXME doesn't work
         }
 
@@ -46,6 +47,26 @@ export function lastPlayedFeature(target: HTMLElement) {
   } else {
     handled = ''
   }
+}
+
+function updatePostDateProgress(progress: number) {
+  const postDate = document.querySelector('.post-date')
+
+  let postDateProgress: HTMLElement | undefined
+
+  if (!postDate?.querySelector('.fp-max-post-date-progress')) {
+    postDateProgress = document.createElement('span')
+    postDateProgress.classList.add('fp-max-post-date-progress')
+    postDate?.appendChild(postDateProgress)
+  } else {
+    postDateProgress = postDate.querySelector('.fp-max-post-date-progress') as HTMLElement
+  }
+
+  postDateProgress.innerHTML = ` &bull; Watched ${Intl.NumberFormat(undefined, {
+    style: 'percent',
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+  }).format(progress)}`
 }
 
 export function showCompletionFeature(target: HTMLElement) {
@@ -67,7 +88,7 @@ function lastPlayedUpdateCallback(vid: HTMLVideoElement, vidId: string): () => v
     const vidCompletionKey = `completionPercentMap.${vidId}`
     chrome.storage.sync.get(
       [vidKey, 'completedPercent'],
-      ({ completedPercent = 95, ...result }) => {
+      ({ completedPercent = 95, showCompletion = true, ...result }) => {
         if (Math.floor(result[vidKey]) === Math.floor(vid.currentTime)) return
         if (vid.currentTime / vid.duration >= completedPercent / 100) {
           debugLog('Video completed:', vidId)
@@ -75,11 +96,14 @@ function lastPlayedUpdateCallback(vid: HTMLVideoElement, vidId: string): () => v
           chrome.storage.sync.set({ [vidCompletionKey]: 1 })
           return
         }
-        debugLog('Saving last played:', vidId, vid.currentTime)
+        infoLog('Saving last played:', vidId, vid.currentTime)
         chrome.storage.sync.set({
           [vidKey]: vid.currentTime,
           [vidCompletionKey]: vid.currentTime / vid.duration,
         })
+        if (showCompletion) {
+          updatePostDateProgress(vid.currentTime / vid.duration)
+        }
       },
     )
   }

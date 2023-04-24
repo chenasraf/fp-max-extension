@@ -27,4 +27,4 @@ export const LogLevel = {
   error: 'error',
 } as const
 
-export type LogLevel = typeof LogLevel[keyof typeof LogLevel]
+export type LogLevel = (typeof LogLevel)[keyof typeof LogLevel]
