@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.3.2
+
+- Add watched % label next to video upload date
+
 ## v0.3.1
 
 ### Features

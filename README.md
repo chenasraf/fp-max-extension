@@ -8,8 +8,9 @@ Current features:
 - Show video progress on thumbnails
 - Timestamp links in comments
 
-🔐 This extension is secure and private. Trusting me is nice, but if you don't that's a smart move -
-build this extension yourself: the extension is open source, and available for peer review or forks.
+🔐 I try to make this extension secure and private, there is no tracking code anywhere. Trusting me
+is nice, but if you don't that's a smart move - build this extension yourself: it is open source,
+and available for peer review or forks.
 
 🕷 Post issues/bugs, questions or feature requests at this link:
 <https://github.com/chenasraf/fp-max-extension/issues>
