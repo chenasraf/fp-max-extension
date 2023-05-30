@@ -28,6 +28,9 @@ export function lastPlayedFeature(target: HTMLElement) {
     handled = document.location.pathname
     const vidId = getVideoId()
     const vidKey = `lastPlayedMap.${vidId}`
+
+    updatePostDateProgress(undefined)
+
     chrome.storage.sync.get(
       [vidKey, 'saveInterval', 'returnToLastTime'],
       ({ returnToLastTime, saveInterval = 5000, ...result }) => {
@@ -49,7 +52,7 @@ export function lastPlayedFeature(target: HTMLElement) {
   }
 }
 
-function updatePostDateProgress(progress: number) {
+function updatePostDateProgress(progress: number | undefined) {
   const postDate = document.querySelector('.post-date')
 
   let postDateProgress: HTMLElement | undefined
@@ -62,11 +65,16 @@ function updatePostDateProgress(progress: number) {
     postDateProgress = postDate.querySelector('.fp-max-post-date-progress') as HTMLElement
   }
 
-  postDateProgress.innerHTML = ` &bull; Watched ${Intl.NumberFormat(undefined, {
-    style: 'percent',
-    maximumFractionDigits: 0,
-    minimumFractionDigits: 0,
-  }).format(progress)}`
+  const percent =
+    progress !== undefined
+      ? Intl.NumberFormat(undefined, {
+          style: 'percent',
+          maximumFractionDigits: 0,
+          minimumFractionDigits: 0,
+        }).format(progress)
+      : '?%'
+
+  postDateProgress.innerHTML = ` &bull; Watched ${percent}`
 }
 
 export function showCompletionFeature(target: HTMLElement) {
