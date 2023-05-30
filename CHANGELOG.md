@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.3.3
+
+### Features
+
+- Show progress text on page load
+
 ## v0.3.2
 
 - Add watched % label next to video upload date
